@@ -1,0 +1,7 @@
+node_modules
+docs
+build
+coverage
+public
+*.config.js
+*.config.ts
