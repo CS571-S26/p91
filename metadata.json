@@ -1,0 +1,5 @@
+{
+  "name": "Madison Meal Spinner",
+  "description": "A premium, minimalist web application for UW-Madison students to discover dining options through an interactive spinner wheel.",
+  "requestFramePermissions": ["geolocation"]
+}

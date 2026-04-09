@@ -7,7 +7,7 @@ import type { Restaurant } from '../types'
 
 export const Home = () => {
   const navigate = useNavigate()
-  const { setLastGenerated, lastGenerated, showModal } = useStore()
+  const { setLastGenerated, showModal } = useStore()
 
   const handleGenerate = (results: Restaurant[]) => {
     if (results.length === 0) {
