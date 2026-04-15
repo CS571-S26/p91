@@ -2,7 +2,9 @@
 
 A modern React application built for CS 571, utilizing Vite. The project is strictly typed with TypeScript and styled using a combination of Tailwind CSS and React Bootstrap.
 
-## 🚀 Tech Stack
+Running on https://cs571-s26.github.io/p91/
+
+## Tech Stack
 
 - **Framework:** [React 19](https://react.dev/)
 - **Routing:** [React Router v7](https://reactrouter.com/)
@@ -12,7 +14,7 @@ A modern React application built for CS 571, utilizing Vite. The project is stri
 - **Icons:** [Lucide React](https://lucide.dev/)
 - **Linting & Formatting:** ESLint (v10 Flat Config) + Prettier
 
-## 🛠️ Getting Started
+## Getting Started
 
 ### Prerequisites
 
@@ -36,7 +38,7 @@ npm run dev
 
 The application will be available at `http://localhost:5173/p91/`.
 
-## ✍️ Code Quality & Formatting
+## Code Quality & Formatting
 
 This project maintains strict code quality standards to ensure consistency and prevent bugs.
 
@@ -50,7 +52,7 @@ This project maintains strict code quality standards to ensure consistency and p
 
 _Note for Developers: It is highly recommended to use VS Code with the ESLint and Prettier extensions installed, and to enable `editor.formatOnSave` in your local workspace settings._
 
-## 📦 Build & Deployment
+## Build & Deployment
 
 This project is configured for easy deployment to GitHub Pages.
 
