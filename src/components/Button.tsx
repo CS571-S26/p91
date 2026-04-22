@@ -4,7 +4,6 @@ import { cn } from '../lib/utils'
 export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: 'primary' | 'secondary' | 'outline' | 'ghost'
   size?: 'sm' | 'md' | 'lg'
-  [key: string]: any
 }
 
 export const Button = ({

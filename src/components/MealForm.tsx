@@ -1,6 +1,7 @@
-import { DollarSign, ListFilter, MapPin, Search } from 'lucide-react'
+import { DollarSign, ListFilter, MapPin, Search, UtensilsCrossed } from 'lucide-react'
 import React, { useState } from 'react'
-import { MOCK_RESTAURANTS } from '../constants'
+import { FOOD_GENRES, MOCK_RESTAURANTS } from '../constants'
+import { filterRestaurants } from '../lib/filter'
 import type { Restaurant } from '../types'
 import { Button } from './Button'
 
@@ -12,22 +13,22 @@ export const MealForm = ({ onGenerate }: MealFormProps) => {
   const [budget, setBudget] = useState(2)
   const [distance, setDistance] = useState(1)
   const [genNumber, setGenNumber] = useState(6)
+  const [selectedGenres, setSelectedGenres] = useState<string[]>([])
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
-
-    // Filter mock data based on criteria
-    let results = MOCK_RESTAURANTS.filter((r) => r.budget <= budget && r.distance <= distance)
-
-    // If we don't have enough results, add more from the mock data to reach genNumber
-    if (results.length < genNumber) {
-      const remaining = MOCK_RESTAURANTS.filter((r) => !results.find((res) => res.id === r.id))
-      results = [...results, ...remaining].slice(0, genNumber)
-    } else {
-      results = results.slice(0, genNumber)
-    }
-
+    const results = filterRestaurants(
+      MOCK_RESTAURANTS,
+      { budget, distance, genres: selectedGenres },
+      genNumber,
+    )
     onGenerate(results)
+  }
+
+  const toggleGenre = (genre: string) => {
+    setSelectedGenres((prev) =>
+      prev.includes(genre) ? prev.filter((g) => g !== genre) : [...prev, genre],
+    )
   }
 
   return (
@@ -126,6 +127,47 @@ export const MealForm = ({ onGenerate }: MealFormProps) => {
               </div>
             </div>
           </div>
+        </div>
+      </div>
+
+      <div className="space-y-4 border-t border-gray-100 pt-8">
+        <div className="flex flex-wrap items-center justify-between gap-2">
+          <label className="flex items-center space-x-2 text-sm font-bold text-gray-900 uppercase tracking-wider">
+            <UtensilsCrossed className="w-4 h-4 text-[#c5050c]" />
+            <span>Cuisine</span>
+          </label>
+          {selectedGenres.length > 0 && (
+            <button
+              type="button"
+              onClick={() => setSelectedGenres([])}
+              className="text-xs font-bold uppercase tracking-wide text-[#c5050c] hover:text-[#9b0000]"
+            >
+              Clear all
+            </button>
+          )}
+        </div>
+        <p className="text-xs text-gray-500 leading-relaxed">
+          Optional: pick one or more genres. Leave empty to include every cuisine that fits your budget
+          and distance.
+        </p>
+        <div className="flex flex-wrap gap-2 max-h-40 overflow-y-auto pr-1 -mr-1">
+          {FOOD_GENRES.map((genre) => {
+            const active = selectedGenres.includes(genre)
+            return (
+              <button
+                key={genre}
+                type="button"
+                onClick={() => toggleGenre(genre)}
+                className={`rounded-full px-3.5 py-1.5 text-xs font-bold border-2 transition-all ${
+                  active
+                    ? 'bg-[#c5050c] text-white border-[#c5050c] shadow-sm'
+                    : 'bg-gray-50 text-gray-600 border-transparent hover:border-gray-200 hover:bg-gray-100'
+                }`}
+              >
+                {genre}
+              </button>
+            )
+          })}
         </div>
       </div>
 
