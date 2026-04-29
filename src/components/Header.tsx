@@ -1,4 +1,4 @@
-import { Heart, History, Menu, Utensils, X } from 'lucide-react'
+import { Heart, History, LayoutGrid, Menu, Utensils, X } from 'lucide-react'
 import { AnimatePresence, motion } from 'motion/react'
 import { useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
@@ -10,6 +10,7 @@ export const Header = () => {
 
   const navItems = [
     { name: 'Spinner', path: '/', icon: Utensils },
+    { name: 'Browse', path: '/restaurants', icon: LayoutGrid },
     { name: 'History', path: '/history', icon: History },
     { name: 'Favorites', path: '/favorites', icon: Heart },
   ]

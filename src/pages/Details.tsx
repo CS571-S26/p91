@@ -1,4 +1,4 @@
-import { ArrowLeft, Clock, Globe, Heart, MapPin, Phone, Star } from 'lucide-react'
+import { ArrowLeft, ArrowRight, Clock, Globe, Heart, MapPin, Phone, Star } from 'lucide-react'
 import { motion } from 'motion/react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { Badge } from '../components/Badge'
@@ -10,9 +10,16 @@ import { useStore } from '../store/useStore'
 export const Details = () => {
   const { id } = useParams()
   const navigate = useNavigate()
-  const { toggleFavorite, isFavorite } = useStore()
+  const { toggleFavorite, isFavorite, addToHistory, showModal } = useStore()
 
   const restaurant = MOCK_RESTAURANTS.find((r) => r.id === id)
+
+  const handleSelect = () => {
+    if (!restaurant) return
+    addToHistory(restaurant)
+    showModal('success', `Awesome! ${restaurant.name} has been added to your history.`)
+    navigate('/history')
+  }
 
   if (!restaurant) {
     return (
@@ -133,6 +140,13 @@ export const Details = () => {
                 </div>
               </div>
             </div>
+          </div>
+
+          <div className="pt-4">
+            <Button onClick={handleSelect} size="lg" className="w-full sm:w-auto group">
+              Select This Place
+              <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
+            </Button>
           </div>
         </div>
       </div>

@@ -1,7 +1,9 @@
-import { DollarSign, ListFilter, MapPin, Search, UtensilsCrossed } from 'lucide-react'
+import { DollarSign, Heart, ListFilter, MapPin, Search, UtensilsCrossed } from 'lucide-react'
 import React, { useState } from 'react'
+import { Link } from 'react-router-dom'
 import { FOOD_GENRES, MOCK_RESTAURANTS } from '../constants'
 import { filterRestaurants } from '../lib/filter'
+import { useStore } from '../store/useStore'
 import type { Restaurant } from '../types'
 import { Button } from './Button'
 
@@ -9,16 +11,24 @@ interface MealFormProps {
   onGenerate: (results: Restaurant[]) => void
 }
 
+const FAVORITES_ONLY_MIN = 6
+
 export const MealForm = ({ onGenerate }: MealFormProps) => {
+  const favorites = useStore((s) => s.favorites)
   const [budget, setBudget] = useState(2)
   const [distance, setDistance] = useState(1)
   const [genNumber, setGenNumber] = useState(6)
   const [selectedGenres, setSelectedGenres] = useState<string[]>([])
+  const [favoritesOnly, setFavoritesOnly] = useState(false)
+
+  const favoritesUnlocked = favorites.length >= FAVORITES_ONLY_MIN
+  const useFavorites = favoritesOnly && favoritesUnlocked
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
+    const source = useFavorites ? favorites : MOCK_RESTAURANTS
     const results = filterRestaurants(
-      MOCK_RESTAURANTS,
+      source,
       { budget, distance, genres: selectedGenres },
       genNumber,
     )
@@ -150,7 +160,7 @@ export const MealForm = ({ onGenerate }: MealFormProps) => {
           Optional: pick one or more genres. Leave empty to include every cuisine that fits your budget
           and distance.
         </p>
-        <div className="flex flex-wrap gap-2 max-h-40 overflow-y-auto pr-1 -mr-1">
+        <div className="flex flex-wrap gap-2">
           {FOOD_GENRES.map((genre) => {
             const active = selectedGenres.includes(genre)
             return (
@@ -169,6 +179,66 @@ export const MealForm = ({ onGenerate }: MealFormProps) => {
             )
           })}
         </div>
+      </div>
+
+      <div className="space-y-3 border-t border-gray-100 pt-8">
+        <button
+          type="button"
+          onClick={() => favoritesUnlocked && setFavoritesOnly((v) => !v)}
+          disabled={!favoritesUnlocked}
+          aria-pressed={useFavorites}
+          className={`w-full flex items-center justify-between gap-4 p-5 rounded-2xl border-2 text-left transition-all ${
+            !favoritesUnlocked
+              ? 'bg-gray-50 border-gray-100 text-gray-400 cursor-not-allowed'
+              : useFavorites
+                ? 'bg-[#c5050c] border-[#c5050c] text-white shadow-md'
+                : 'bg-gray-50 border-transparent text-gray-700 hover:bg-gray-100 hover:border-gray-200'
+          }`}
+        >
+          <div className="flex items-center space-x-3">
+            <Heart
+              className={`w-5 h-5 flex-shrink-0 ${useFavorites ? 'fill-white' : ''}`}
+            />
+            <div className="space-y-0.5">
+              <div className="text-sm font-bold uppercase tracking-wider">
+                Spin from favorites only
+              </div>
+              <div
+                className={`text-xs ${
+                  !favoritesUnlocked
+                    ? 'text-gray-400'
+                    : useFavorites
+                      ? 'text-white/80'
+                      : 'text-gray-500'
+                }`}
+              >
+                {favoritesUnlocked
+                  ? 'Pull from your favorite spots!'
+                  : `Save at least ${FAVORITES_ONLY_MIN} restaurants to unlock (${favorites.length}/${FAVORITES_ONLY_MIN}).`}
+              </div>
+            </div>
+          </div>
+          <span
+            className={`relative inline-flex h-6 w-11 flex-shrink-0 rounded-full transition-colors ${
+              useFavorites ? 'bg-white/30' : 'bg-gray-200'
+            }`}
+          >
+            <span
+              className={`absolute top-0.5 left-0.5 h-5 w-5 rounded-full bg-white shadow transition-transform ${
+                useFavorites ? 'translate-x-5' : 'translate-x-0'
+              }`}
+            />
+          </span>
+        </button>
+        {!favoritesUnlocked && (
+          <p className="text-xs text-gray-500 leading-relaxed">
+            Browse the{' '}
+            <Link to="/restaurants" className="font-bold text-[#c5050c] hover:underline">
+              full catalog
+            </Link>{' '}
+            and tap the heart on the spots you love to unlock this option.
+          </p>
+        )}
       </div>
 
       <div className="pt-2">

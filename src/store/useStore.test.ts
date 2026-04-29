@@ -6,7 +6,7 @@ const sample: Restaurant = {
   id: 'r1',
   name: 'Sample',
   description: 'desc',
-  foodTypes: ['American'],
+  foodTypes: ['American & Pub'],
   budget: 2,
   distance: 0.5,
   rating: 4,

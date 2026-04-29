@@ -6,7 +6,7 @@ const makeRestaurant = (overrides: Partial<Restaurant>): Restaurant => ({
   id: 'test',
   name: 'Test',
   description: 'desc',
-  foodTypes: ['American'],
+  foodTypes: ['American & Pub'],
   budget: 2,
   distance: 0.5,
   rating: 4,
@@ -19,11 +19,11 @@ const makeRestaurant = (overrides: Partial<Restaurant>): Restaurant => ({
 })
 
 const fixtures: Restaurant[] = [
-  makeRestaurant({ id: 'a', budget: 1, distance: 0.3, foodTypes: ['Pizza'] }),
-  makeRestaurant({ id: 'b', budget: 2, distance: 0.8, foodTypes: ['Sushi', 'Ramen'] }),
+  makeRestaurant({ id: 'a', budget: 1, distance: 0.3, foodTypes: ['Pizza & Italian'] }),
+  makeRestaurant({ id: 'b', budget: 2, distance: 0.8, foodTypes: ['Asian'] }),
   makeRestaurant({ id: 'c', budget: 3, distance: 1.2, foodTypes: ['Fine Dining'] }),
-  makeRestaurant({ id: 'd', budget: 4, distance: 2.0, foodTypes: ['French', 'Fine Dining'] }),
-  makeRestaurant({ id: 'e', budget: 1, distance: 0.5, foodTypes: ['Pizza', 'Late Night'] }),
+  makeRestaurant({ id: 'd', budget: 4, distance: 2.0, foodTypes: ['Fine Dining'] }),
+  makeRestaurant({ id: 'e', budget: 1, distance: 0.5, foodTypes: ['Pizza & Italian', 'Late Night'] }),
 ]
 
 describe('matchesFilters', () => {
@@ -43,13 +43,13 @@ describe('matchesFilters', () => {
   })
 
   it('requires at least one overlapping genre when genres are provided', () => {
-    const r = makeRestaurant({ foodTypes: ['Pizza', 'Italian'] })
-    expect(matchesFilters(r, { budget: 4, distance: 5, genres: ['Italian'] })).toBe(true)
-    expect(matchesFilters(r, { budget: 4, distance: 5, genres: ['Sushi'] })).toBe(false)
+    const r = makeRestaurant({ foodTypes: ['Pizza & Italian'] })
+    expect(matchesFilters(r, { budget: 4, distance: 5, genres: ['Pizza & Italian'] })).toBe(true)
+    expect(matchesFilters(r, { budget: 4, distance: 5, genres: ['Asian'] })).toBe(false)
   })
 
   it('treats an empty genres array as no cuisine restriction', () => {
-    const r = makeRestaurant({ foodTypes: ['Thai'] })
+    const r = makeRestaurant({ foodTypes: ['Asian'] })
     expect(matchesFilters(r, { budget: 4, distance: 5, genres: [] })).toBe(true)
   })
 })

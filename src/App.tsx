@@ -6,6 +6,7 @@ import { Details } from './pages/Details'
 import { Favorites } from './pages/Favorites'
 import { History } from './pages/History'
 import { Home } from './pages/Home'
+import { Restaurants } from './pages/Restaurants'
 import { Spinner } from './pages/Spinner'
 
 export default function App() {
@@ -17,6 +18,7 @@ export default function App() {
           <Routes>
             <Route index element={<Home />} />
             <Route path="spinner" element={<Spinner />} />
+            <Route path="restaurants" element={<Restaurants />} />
             <Route path="history" element={<History />} />
             <Route path="favorites" element={<Favorites />} />
             <Route path="restaurant/:id" element={<Details />} />
